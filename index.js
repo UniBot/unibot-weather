@@ -28,16 +28,18 @@ module.exports = function init(options) {
      * @type    {{
      *              showFetchMessage: boolean,
      *              messages: {
-     *                  fetchData: string,
-     *                  success: string
+     *                  fetch: string,
+     *                  success: string,
+     *                  error: string
      *              }
      *          }}
      */
     var pluginConfig = {
         "showFetchMessage": true,
         "messages": {
-            "fetchData": "${nick} wait a moment fetching weather data for '${location}'...",
-            "success": "${nick}: temperature: ${weather.main.temp}°C (min: ${weather.main.temp_min}°C, max: ${weather.main.temp_max}°C), wind speed: ${weather.wind.speed}m/s, ${weather.weather[0].main}: ${weather.weather[0].description}"
+            "fetch": "${nick} wait a moment fetching weather data for '${location}'...",
+            "success": "${nick}: temperature: ${weather.main.temp}°C (min: ${weather.main.temp_min}°C, max: ${weather.main.temp_max}°C), wind speed: ${weather.wind.speed}m/s, ${weather.weather[0].main}: ${weather.weather[0].description}",
+            "error": "${nick} cannot find any weather data for '${location}'..."
         }
     };
 
@@ -58,24 +60,26 @@ module.exports = function init(options) {
          * @param   {string}    from
          */
         function getWeather(location, from) {
-            if (pluginConfig.showFetchMessage) {
-                var templateVars = {
-                    nick: from,
-                    location: location
-                };
+            var templateVars = {
+                nick: from,
+                location: location
+            };
 
-                channel.say(_.template(pluginConfig.messages.fetchData, templateVars));
+            if (pluginConfig.showFetchMessage) {
+                channel.say(_.template(pluginConfig.messages.fetch, templateVars));
             }
 
+            // Fetch weather data from OpenWeatherMap API
             helpers.download('http://api.openweathermap.org/data/2.5/find?units=metric&q=' + location, function(data) {
-                data = JSON.parse(data);
+                var weatherData = JSON.parse(data).list[0];
 
-                var templateVars = {
-                    location: location,
-                    weather: data.list[0]
-                };
+                if (_.isEmpty(weatherData)) {
+                    channel.say(_.template(pluginConfig.messages.error, templateVars));
+                } else {
+                    templateVars.weather = weatherData;
 
-                channel.say(_.template(pluginConfig.messages.success, templateVars));
+                    channel.say(_.template(pluginConfig.messages.success, templateVars));
+                }
             });
         }
 
