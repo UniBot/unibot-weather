@@ -1,0 +1,21 @@
+{
+  "name": "unibot-weather",
+  "version": "1.0.0",
+  "description": "Simple weather plugin for UniBot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/UniBot/unibot-weather.git"
+  },
+  "author": "Tarmo Leppänen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/UniBot/unibot-weather/issues"
+  },
+  "dependencies": {
+    "unibot-helpers":  "git://github.com/UniBot/unibot-helpers"
+  }
+}
