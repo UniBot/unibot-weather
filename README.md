@@ -32,7 +32,7 @@ module.exports = {
 ### showFetchMessage
 Show fetch message on channel or not.
 
-### messages.fetchData
+### messages.fetch
 Message that is shown on channel when plugin starts to fetch weather data. Note that this can be disabled. Following
 template variables are available with this message.
 
@@ -52,8 +52,8 @@ weather.*
 ```
 
 Where weather contains all the data from OpenWeatherMap API, you can see an example result with following URL
-http://api.openweathermap.org/data/2.5/find?units=metric&q=Jyv%C3%A4skyl%C3%A4 note that plugin will take first item
-from ```list``` key and uses that.
+http://api.openweathermap.org/data/2.5/find?units=metric&q=Jyv%C3%A4skyl%C3%A4 note that plugin will iterate each items
+from ```list``` key and sends messages from each to specified channel.
 
 ### messages.error
 Message that is shown on channel if plugin cannot find any weather data for specified location. Following template
