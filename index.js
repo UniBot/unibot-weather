@@ -46,7 +46,7 @@ module.exports = function init(options) {
     };
 
     // Merge configuration for plugin
-    if (!_.isUndefined(config.plugins) && !_.isUndefined(config.plugins.weather) && _.isObject(config.plugins.weather)) {
+    if (_.isObject(config.plugins) && _.isObject(config.plugins.weather)) {
         pluginConfig = _.merge(pluginConfig, config.plugins.weather);
     }
 
