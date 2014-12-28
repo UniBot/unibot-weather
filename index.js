@@ -103,7 +103,7 @@ module.exports = function init(options) {
             var location = pluginConfig.location;
 
             if (!_.isUndefined(matches[2])) {
-                location = matches[2];
+                location = matches[2].trim();
             }
 
             getWeather(location, from);
