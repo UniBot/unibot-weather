@@ -90,7 +90,7 @@ module.exports = function init(options) {
                         });
                     }
                 } catch (error) {
-                    channel.say('Oh noes, error: ' + error);
+                    channel.say(from, 'Oh noes, error: ' + error);
                 }
             });
         }
