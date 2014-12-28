@@ -19,6 +19,10 @@ module.exports = {
     ...
     plugins: {
         "weather": {
+            "commands": [
+                "weather"
+            ],
+            "location": "Jyväskylä",
             "showFetchMessage": true,
             "units": "metric",
             "messages": {
@@ -30,6 +34,13 @@ module.exports = {
     }
 };
 ```
+
+### commands
+Array of actual trigger commands. By default only ```weather``` is set. These are added to actual regex command that
+plugin will watch on specified IRC channel.
+
+### location
+Default location to use if command is triggered without location.
 
 ### showFetchMessage
 Show fetch message on channel or not.

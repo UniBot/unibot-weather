@@ -36,6 +36,10 @@ module.exports = function init(options) {
      *          }}
      */
     var pluginConfig = {
+        "commands": [
+            "weather"
+        ],
+        "location": "Jyväskylä",
         "showFetchMessage": true,
         "units": "metric",
         "messages": {
@@ -91,10 +95,20 @@ module.exports = function init(options) {
             });
         }
 
-        return {
-            '^!weather (.+)': function(from, matches) {
-                getWeather(matches[1], from);
+        // Initialize command
+        var command = {};
+
+        // Actual regex for this plugin
+        command['^!(' + pluginConfig.commands.join('|') + ')( (.+))?'] = function match(from, matches) {
+            var location = pluginConfig.location;
+
+            if (!_.isUndefined(matches[2])) {
+                location = matches[2];
             }
+
+            getWeather(location, from);
         };
+
+        return command;
     }
 };
