@@ -11,7 +11,8 @@ And after that register new plugin on IRC channels what you need
 ps. remember to restart your UnitBot.
 
 ## Configuration
-You can configure this plugin adding ```weather``` section to your UniBot ```config.js``` file. Example below
+You can configure this plugin adding ```weather``` section to your UniBot ```config.js``` file. Example below with
+default values.
 
 ```
 module.exports = { 
@@ -19,6 +20,7 @@ module.exports = {
     plugins: {
         "weather": {
             "showFetchMessage": true,
+            "units": "metric",
             "messages": {
                 "fetch": "${nick} wait a moment fetching weather data for '${location}'...",
                 "success": "${nick}: temperature: ${weather.main.temp}°C (min: ${weather.main.temp_min}°C, max: ${weather.main.temp_max}°C), wind speed: ${weather.wind.speed}m/s, ${weather.weather[0].main}: ${weather.weather[0].description}",
@@ -31,6 +33,13 @@ module.exports = {
 
 ### showFetchMessage
 Show fetch message on channel or not.
+
+### units
+What units OpenWeatherMap will use. Following values are allowed:
+
+ * ```internal``` http://api.openweathermap.org/data/2.5/find?q=London
+ * ```metric``` http://api.openweathermap.org/data/2.5/find?q=London&units=metric
+ * ```imperial``` http://api.openweathermap.org/data/2.5/find?q=London&units=imperial
 
 ### messages.fetch
 Message that is shown on channel when plugin starts to fetch weather data. Note that this can be disabled. Following

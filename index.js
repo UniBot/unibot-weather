@@ -27,6 +27,7 @@ module.exports = function init(options) {
      *
      * @type    {{
      *              showFetchMessage: boolean,
+     *              units: string,
      *              messages: {
      *                  fetch: string,
      *                  success: string,
@@ -36,6 +37,7 @@ module.exports = function init(options) {
      */
     var pluginConfig = {
         "showFetchMessage": true,
+        "units": "metric",
         "messages": {
             "fetch": "${nick}: wait a moment fetching weather data for '${location}'...",
             "success": "${nick}: temperature: ${weather.main.temp}°C (min: ${weather.main.temp_min}°C, max: ${weather.main.temp_max}°C), wind speed: ${weather.wind.speed}m/s, ${weather.weather[0].main}: ${weather.weather[0].description}",
@@ -70,17 +72,21 @@ module.exports = function init(options) {
             }
 
             // Fetch weather data from OpenWeatherMap API
-            helpers.download('http://api.openweathermap.org/data/2.5/find?units=metric&q=' + location, function(data) {
-                var weatherData = JSON.parse(data);
+            helpers.download('http://api.openweathermap.org/data/2.5/find?units=' + pluginConfig.units + '&q=' + location, function(data) {
+                try {
+                    var weatherData = JSON.parse(data);
 
-                if (weatherData.count == 0) {
-                    channel.say(_.template(pluginConfig.messages.error, templateVars));
-                } else {
-                    _.each(weatherData.list, function iterator(data) {
-                        templateVars.weather = data;
+                    if (parseInt(weatherData.count, 10) === 0) {
+                        channel.say(_.template(pluginConfig.messages.error, templateVars));
+                    } else {
+                        _.each(weatherData.list, function iterator(data) {
+                            templateVars.weather = data;
 
-                        channel.say(_.template(pluginConfig.messages.success, templateVars));
-                    });
+                            channel.say(_.template(pluginConfig.messages.success, templateVars));
+                        });
+                    }
+                } catch (error) {
+                    channel.say('Oh noes, error: ' + error);
                 }
             });
         }
